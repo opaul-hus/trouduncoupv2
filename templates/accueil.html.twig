@@ -1,43 +1,96 @@
 {% extends('base.html.twig') %}
 
-{% block stylesheets %}
-<link rel="stylesheet" href="{{asset('css/chomeQuiPeut.css')}}">
-{% endblock %}
 
-{% block javascripts %}
-<script src="{{asset('js/modaleChomeur.js') }}"></script>
-{% endblock %}
 
  {% block body %}
-   <section class="row">
-    <article class="col-4 sectionGauche">
-       <h3>Liste des chômeurs</h3>
-       <ol>
-        {% for chomeur in tabChomeurs %}
-           <li><a class='boutonModal' href="{{ path('chomeur_details', {id: chomeur.id } ) }}">
-            {{ chomeur.nom }}, 
-            {{ chomeur.adresse.ville}}</a></li>
-        {% endfor %}
-     </ol>
-    </article>
+  <div class="side-full">
 
-    <article class="col-8 sectionDroite">
-        <h3>Offres d'emplois</h3>
-        <ol>
-           {% for oe in tabOE %}
-              <li>{{ oe.titre }}, {{oe.Entreprise.nom}}</li>
-           {% endfor %}
-        </ol>
-    </article>
-   </section>
+ <!-- Main -->
+  <div id="main">
+    <div class="cl">&nbsp;</div>
+    <!-- Content -->
+    <div id="content">
+      <!-- Content Slider -->
+      <div id="slider" class="box">
+        <div id="slider-holder">
+          <ul>
+            <li><a href="#"><img src="css/images/slide1.jpg" alt="" /></a></li>
+            <li><a href="#"><img src="css/images/slide1.jpg" alt="" /></a></li>
+            <li><a href="#"><img src="css/images/slide1.jpg" alt="" /></a></li>
+            <li><a href="#"><img src="css/images/slide1.jpg" alt="" /></a></li>
+          </ul>
+        </div>
+        <div id="slider-nav"> <a href="#" class="active">1</a> <a href="#">2</a> <a href="#">3</a> <a href="#">4</a> </div>
+      </div>
+      <!-- End Content Slider -->
+      <!-- Products -->
+        <div class="products">
+        <div class="cl">&nbsp;</div>
+        <ul>
 
-   <section class="row">
-      <a class='col-3' href="creationChomeurHC"><button class='btn btn-info'>Créer chômeur Hard </button></a>
-      <a class='col-3' href="creationOffreEmploiHC"><button class='btn btn-info'>Créer offre emploi Hard </button></a>
-      <a class='col-3' href="afficherEntreprise"><button class='btn btn-danger'>Afficher entreprises</button></a>
-   </section>
 
-   <section  id="modaleChomeur" title="Détails du chômeur">
-   </section>
-
+        </ul>
+        
+        <div class="cl">&nbsp;</div>
+      </div>
+      <!-- End Products -->
+    </div>
+    <!-- End Content -->
+    <!-- Sidebar -->
+    <div id="sidebar">
+      <!-- Search -->
+      <div class="box search">
+        <h2>Recherche <span></span></h2>
+        <div class="box-content">
+          <form action="#" method="post">
+            <label>Mots-clés</label>
+            <input type="text" class="field" />
+            <input type="submit" class="search-submit" value="Go" />
+          </form>
+        </div>
+      </div>
+      <!-- End Search -->
+      <!-- Categories -->
+      <div class="box categories">
+        <h2>Catégories <span></span></h2>
+        <div class="box-content">
+          <ul>
+     
+          </ul>
+        </div>
+      </div>
+      <!-- End Categories -->
+    </div>
+    <!-- End Sidebar -->
+    <div class="cl">&nbsp;</div>
+  </div>
+    <!-- Text Cols -->
+    <div class="cols">
+      <div class="cl">&nbsp;</div>
+      <div class="col">
+        <h3 class="ico ico1">Donec imperdiet</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec imperdiet, metus ac cursus auctor, arcu felis ornare dui.</p>
+        <p class="more"><a href="#" class="bul">Lorem ipsum</a></p>
+      </div>
+      <div class="col">
+        <h3 class="ico ico2">Donec imperdiet</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec imperdiet, metus ac cursus auctor, arcu felis ornare dui.</p>
+        <p class="more"><a href="#" class="bul">Lorem ipsum</a></p>
+      </div>
+      <div class="col">
+        <h3 class="ico ico3">Donec imperdiet</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec imperdiet, metus ac cursus auctor, arcu felis ornare dui.</p>
+        <p class="more"><a href="#" class="bul">Lorem ipsum</a></p>
+      </div>
+      <div class="col col-last">
+        <h3 class="ico ico4">Donec imperdiet</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec imperdiet, metus ac cursus auctor, arcu felis ornare dui.</p>
+        <p class="more"><a href="#" class="bul">Lorem ipsum</a></p>
+      </div>
+      
+      <div class="cl">&nbsp;</div>
+    </div>
+    <!-- End Text Cols -->
+  </div>
+  <!-- End Side Full -->
    {% endblock %}
