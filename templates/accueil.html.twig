@@ -1,0 +1,43 @@
+{% extends('base.html.twig') %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{asset('css/chomeQuiPeut.css')}}">
+{% endblock %}
+
+{% block javascripts %}
+<script src="{{asset('js/modaleChomeur.js') }}"></script>
+{% endblock %}
+
+ {% block body %}
+   <section class="row">
+    <article class="col-4 sectionGauche">
+       <h3>Liste des chômeurs</h3>
+       <ol>
+        {% for chomeur in tabChomeurs %}
+           <li><a class='boutonModal' href="{{ path('chomeur_details', {id: chomeur.id } ) }}">
+            {{ chomeur.nom }}, 
+            {{ chomeur.adresse.ville}}</a></li>
+        {% endfor %}
+     </ol>
+    </article>
+
+    <article class="col-8 sectionDroite">
+        <h3>Offres d'emplois</h3>
+        <ol>
+           {% for oe in tabOE %}
+              <li>{{ oe.titre }}, {{oe.Entreprise.nom}}</li>
+           {% endfor %}
+        </ol>
+    </article>
+   </section>
+
+   <section class="row">
+      <a class='col-3' href="creationChomeurHC"><button class='btn btn-info'>Créer chômeur Hard </button></a>
+      <a class='col-3' href="creationOffreEmploiHC"><button class='btn btn-info'>Créer offre emploi Hard </button></a>
+      <a class='col-3' href="afficherEntreprise"><button class='btn btn-danger'>Afficher entreprises</button></a>
+   </section>
+
+   <section  id="modaleChomeur" title="Détails du chômeur">
+   </section>
+
+   {% endblock %}
