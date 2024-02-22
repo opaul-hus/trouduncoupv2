@@ -14,10 +14,10 @@
       <div id="slider" class="box">
         <div id="slider-holder">
           <ul>
-            <li><a href="#"><img src="css/images/slide1.jpg" alt="" /></a></li>
-            <li><a href="#"><img src="css/images/slide1.jpg" alt="" /></a></li>
-            <li><a href="#"><img src="css/images/slide1.jpg" alt="" /></a></li>
-            <li><a href="#"><img src="css/images/slide1.jpg" alt="" /></a></li>
+            <li><a href="#"><img src="css/images/golf1.jpg" alt="" /></a></li>
+            <li><a href="#"><img src="css/images/golf2.jpg" alt="" /></a></li>
+            <li><a href="#"><img src="css/images/golf3.jpg" alt="" /></a></li>
+            <li><a href="#"><img src="css/images/golf4.jpg" alt="" /></a></li>
           </ul>
         </div>
         <div id="slider-nav"> <a href="#" class="active">1</a> <a href="#">2</a> <a href="#">3</a> <a href="#">4</a> </div>
@@ -27,7 +27,31 @@
         <div class="products">
         <div class="cl">&nbsp;</div>
         <ul>
+        {% for produit in tabProduits %}
+          {% if loop.index%3==0 %}
+          <li class="last"> <a href="#" ><img src="css/images/{{produit.id}}.jpg" alt="{{produit.nom}}" class="product-img"></a>
+            <div class="product-info">
+              <h3>{{produit.categorie.nom}}</h3>
+              <div class="product-desc">
+                
+                <p>{{produit.nom}}</p>
+                <strong class="price">$ {{produit.prix}}</strong> </div>
+            </div>
+          </li>
 
+          {% else %}
+ 
+          <li > <a href="#" class="product-img" style="width=280px"><img src="css/images/{{produit.id}}.jpg" alt="{{produit.nom}}" class="product-img"  /></a>
+            <div class="product-info">
+              <h3>{{produit.categorie.nom}}</h3>
+              <div class="product-desc">
+                
+                <p>{{produit.nom}}</p>
+                <strong class="price">$ {{produit.prix}}</strong> </div>
+            </div>
+          </li>
+          {% endif %}
+        {% endfor %}
 
         </ul>
         
@@ -55,6 +79,9 @@
         <h2>Catégories <span></span></h2>
         <div class="box-content">
           <ul>
+          {% for categorie in tabCat %}
+            <li><a href="#">{{categorie.nom}}</a></li>
+          {% endfor %}
      
           </ul>
         </div>
