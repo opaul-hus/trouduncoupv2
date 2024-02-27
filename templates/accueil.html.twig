@@ -1,6 +1,8 @@
 {% extends('base.html.twig') %}
 
-
+    {% block javascripts %}
+    <script src="{{asset('js/modalProduit.js') }}" type="text/javascript"></script>
+    {% endblock %}
 
  {% block body %}
   <div class="side-full">
@@ -29,7 +31,7 @@
         <ul>
         {% for produit in tabProduits %}
           {% if loop.index%3==0 %}
-          <li class="last"> <a href="#" ><img src="css/images/{{produit.id}}.jpg" alt="{{produit.nom}}" class="product-img"></a>
+          <li class="last boutonModal"  href="{{ path('produit_details',{id: produit.id})}}" > <a ><img src="css/images/{{produit.id}}.jpg" alt="{{produit.nom}}" class="product-img" onerror="this.onerror=null;this.src='css/images/pasImage.jpg';"></a>
             <div class="product-info">
               <h3>{{produit.categorie.nom}}</h3>
               <div class="product-desc">
@@ -41,7 +43,7 @@
 
           {% else %}
  
-          <li > <a href="#" class="product-img" style="width=280px"><img src="css/images/{{produit.id}}.jpg" alt="{{produit.nom}}" class="product-img"  /></a>
+          <li class="boutonModal" href="{{ path('produit_details',{id: produit.id})}}"> <a  class="product-img" style="width=280px"><img src="css/images/{{produit.id}}.jpg" alt="{{produit.nom}}" class="product-img" onerror="this.onerror=null;this.src='css/images/pasImage.jpg';" /></a>
             <div class="product-info">
               <h3>{{produit.categorie.nom}}</h3>
               <div class="product-desc">
@@ -78,12 +80,14 @@
       <div class="box categories">
         <h2>Catégories <span></span></h2>
         <div class="box-content">
+        <form method="post">
           <ul>
           {% for categorie in tabCat %}
             <li><a href="#">{{categorie.nom}}</a></li>
           {% endfor %}
      
           </ul>
+        </form>
         </div>
       </div>
       <!-- End Categories -->
@@ -120,4 +124,8 @@
     <!-- End Text Cols -->
   </div>
   <!-- End Side Full -->
+  <div id="modalProduit" title="Détails du produit"></div>
+  
+  <script src="/js/modalProduit.js"></script>
+
    {% endblock %}

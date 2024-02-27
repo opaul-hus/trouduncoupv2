@@ -29,4 +29,22 @@ class BaseController extends AbstractController
         return $this->render('accueil.html.twig',
          ['tabProduits' => $tabProduits, 'tabCat' => $tabCat]);
     }
+
+
+    #[Route('/produit/details/{id}', name:'produit_details')]
+    public function produits_details(ManagerRegistry $doctrine, $id): Response
+    {
+       $em = $doctrine->getManager();
+
+       $produit = $em->getRepository(Produits::class)->find($id);
+       
+
+       
+
+       return $this->render("detailsProduit.html.twig", ['produit' => $produit]);
+
+    }
+    public function searchBarAction(){
+        
+    }
 }
