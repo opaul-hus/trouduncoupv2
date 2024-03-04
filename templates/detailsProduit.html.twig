@@ -1,1 +1,16 @@
-<h1>{{produit.nom}}<h1>
+
+
+  <div class="grid-container">
+    <div class="grid-item">
+        <h2 class="title">{{produit.nom}}</h2>
+        <p><img src="css/images/{{produit.id}}_2.jpg" alt="{{produit.nom}}" class="product-img" onerror="this.onerror=null;this.src='css/images/pasImage.jpg';"></p>
+    </div>
+    <div class="grid-item">
+        <p class="desc">{{produit.description}}</p>
+        <p class="quantity">Quantité en stock: <span >{{produit.quanStock}}</span></p>
+        <p class="price">Prix: <span id="productPrice">${{produit.prix}}</span></p>
+        <a class="modaleCart"><button class="buttonCart"><img src="css/images/cart-link.gif"  alt=""/>Ajouter au panier</button></a>
+
+    </div>
+  </div>
+</div>

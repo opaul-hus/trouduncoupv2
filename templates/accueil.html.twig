@@ -28,28 +28,37 @@
       <!-- Products -->
         <div class="products">
         <div class="cl">&nbsp;</div>
+  {% for message in app.flashes('notice') %} 
+    <div class="flash-notice">
+      <p id="messageCriteria">{{message}}</p>
+    </div>
+    {% endfor %}
         <ul>
+        
         {% for produit in tabProduits %}
           {% if loop.index%3==0 %}
-          <li class="last boutonModal"  href="{{ path('produit_details',{id: produit.id})}}" > <a ><img src="css/images/{{produit.id}}.jpg" alt="{{produit.nom}}" class="product-img" onerror="this.onerror=null;this.src='css/images/pasImage.jpg';"></a>
+          <li class="last "  > <a class="boutonModal" href="{{ path('produit_details',{id: produit.id})}}"><img src="css/images/{{produit.id}}.jpg" alt="{{produit.nom}}" class="product-img" onerror="this.onerror=null;this.src='css/images/pasImage.jpg';"></a>
             <div class="product-info">
               <h3>{{produit.categorie.nom}}</h3>
               <div class="product-desc">
                 
-                <p>{{produit.nom}}</p>
+                <p  >{{produit.nom}}</a>
                 <strong class="price">$ {{produit.prix}}</strong> </div>
+                <button class="buttonCart"><img src="css/images/cart-link.gif"  alt=""/>Ajouter au panier</button>
             </div>
           </li>
 
           {% else %}
  
-          <li class="boutonModal" href="{{ path('produit_details',{id: produit.id})}}"> <a  class="product-img" style="width=280px"><img src="css/images/{{produit.id}}.jpg" alt="{{produit.nom}}" class="product-img" onerror="this.onerror=null;this.src='css/images/pasImage.jpg';" /></a>
+          <li > <a    class="boutonModal" href="{{ path('produit_details',{id: produit.id})}}"><img src="css/images/{{produit.id}}.jpg" class="product-img" alt="{{produit.nom}}" class="product-img" onerror="this.onerror=null;this.src='css/images/pasImage.jpg';" /></a>
             <div class="product-info">
               <h3>{{produit.categorie.nom}}</h3>
               <div class="product-desc">
                 
-                <p>{{produit.nom}}</p>
+                <p >{{produit.nom}}</a>
                 <strong class="price">$ {{produit.prix}}</strong> </div>
+                <button class="buttonCart"><img src="css/images/cart-link.gif"  alt=""/>Ajouter au panier</button>
+
             </div>
           </li>
           {% endif %}
@@ -68,9 +77,9 @@
       <div class="box search">
         <h2>Recherche <span></span></h2>
         <div class="box-content">
-          <form action="#" method="post">
+          <form action="{{ path('rechercheTroupDunCoup') }}" method="POST">
             <label>Mots-clés</label>
-            <input type="text" class="field" />
+            <input type="text" class="field" name="searchField" />
             <input type="submit" class="search-submit" value="Go" />
           </form>
         </div>
@@ -80,14 +89,14 @@
       <div class="box categories">
         <h2>Catégories <span></span></h2>
         <div class="box-content">
-        <form method="post">
+        
           <ul>
           {% for categorie in tabCat %}
-            <li><a href="#">{{categorie.nom}}</a></li>
+            <li><a href="/?categorie={{categorie.id}}">{{categorie.nom}}</a></li>
           {% endfor %}
      
           </ul>
-        </form>
+        
         </div>
       </div>
       <!-- End Categories -->

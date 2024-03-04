@@ -3,3 +3,62 @@
     height: 280px;
     margin: 0 auto;
 }
+
+
+
+  .grid-container {
+    display: grid;
+    grid-template-columns: 280px auto ;
+  }
+
+  .title {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .desc{
+    font-size: 15px;
+    text-align: center;
+    margin-top: 20px;
+  }
+
+    .price{
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 20px;
+        color: #8b0000;
+    }
+
+    .quantity{
+        text-align: center;
+        margin-top: 20px;
+        font-weight: bold;
+        color:  green;
+    }
+
+    .buttonCart {
+        border-radius: 12px;
+        background-color: #8b0000;
+        color: whitesmoke;
+        border: 2px solid whitesmoke; /* Green */
+        padding: 5px;
+        align-items: center;
+    }
+
+    .modaleCart{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    #messageCriteria{
+        text-align: center;
+        margin-top: 20px;
+        color:  whitesmoke;
+        background-color: green;
+        padding: 10px;
+    }
