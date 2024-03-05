@@ -65,9 +65,7 @@ class BaseController extends AbstractController
         getRepository(Categories::class)->
         findAll();
 
-                // Récup à partir du $_GET                            
-                $categorie = $request->query->get('categorie');
-                //dd($texteRecherche);
+              
         
                 if (isset($categorie))
                 {
@@ -76,18 +74,10 @@ class BaseController extends AbstractController
                     {
                         $this->addFlash("notice", "Aucun produit ne correspond à votre recherche");
                     }
-                }
-
-
-                                 
-        
-        
-                                 
+                }            
          
             $texteRecherche = $request->get('searchField');
 
-         
-         
             
                 
                 if (strlen($texteRecherche) > 0 )
@@ -123,6 +113,12 @@ class BaseController extends AbstractController
 
        return $this->render("detailsProduit.html.twig", ['produit' => $produit]);
 
+    }
+    #[Route('/a_propos', name:'produit_ajout')]
+    public function about_us(ManagerRegistry $doctrine, Request $request): Response
+    {
+
+        return $this->render('aboutUs.html.twig', []);
     }
 
     //--------------------------------------

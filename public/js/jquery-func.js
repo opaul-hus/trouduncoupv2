@@ -43,4 +43,9 @@ $(document).ready(function() {
 		buttonNextHTML: null,
 		buttonPrevHTML: null
 	});
+	
+	$(".nav-item").click(function(){
+		$(this).addClass('active').siblings().removeClass('active');
+	});
 });
+
