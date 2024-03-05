@@ -43,7 +43,7 @@
               <h3>{{produit.categorie.nom}}</h3>
               <div class="product-desc">
                 
-                <p  >{{produit.nom}}</a>
+                <p  >{{produit.nom}}</p>
                 <strong class="price">$ {{produit.prix}}</strong> </div>
                 <button class="buttonCart"><img src="css/images/cart-link.gif"  alt=""/>Ajouter au panier</button>
             </div>
@@ -51,12 +51,12 @@
 
           {% else %}
  
-          <li > <a    class="boutonModal" href="{{ path('produit_details',{id: produit.id})}}"><img src="css/images/{{produit.id}}.jpg" class="product-img" alt="{{produit.nom}}" class="product-img" onerror="this.onerror=null;this.src='css/images/pasImage.jpg';" /></a>
+          <li > <a    class="boutonModal" href="{{ path('produit_details',{id: produit.id})}}"><img src="css/images/{{produit.id}}.jpg" alt="{{produit.nom}}" class="product-img" onerror="this.onerror=null;this.src='css/images/pasImage.jpg';" /></a>
             <div class="product-info">
               <h3>{{produit.categorie.nom}}</h3>
               <div class="product-desc">
                 
-                <p >{{produit.nom}}</a>
+                <p >{{produit.nom}}</p>
                 <strong class="price">$ {{produit.prix}}</strong> </div>
                 <button class="buttonCart"><img src="css/images/cart-link.gif"  alt=""/>Ajouter au panier</button>
 
