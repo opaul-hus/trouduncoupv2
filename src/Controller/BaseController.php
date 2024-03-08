@@ -12,6 +12,9 @@ use App\Entity\Categories;
 
 class BaseController extends AbstractController
 {
+     //--------------------------------------
+    //route de base pour le site affiche tous les produits
+    //--------------------------------------
     #[Route('/', name: 'acceuilTroupDunCoup')]
     public function index(ManagerRegistry $doctrine, Request $request): Response
     {
@@ -50,6 +53,9 @@ class BaseController extends AbstractController
         return $this->render('accueil.html.twig',
          ['tabProduits' => $tabProduits, 'tabCat' => $tabCat]);
     }
+     //--------------------------------------
+    //route de recherche pour le site affiche les produits correspondant à la recherche
+    //--------------------------------------
     #[Route('/recherche', name: 'rechercheTroupDunCoup')]
     public function rechercheTroupDunCoup(ManagerRegistry $doctrine, Request $request): Response
     {
@@ -99,7 +105,9 @@ class BaseController extends AbstractController
         return $this->render('accueil.html.twig',
          ['tabProduits' => $tabProduits, 'tabCat' => $tabCat]);
     }
-
+    //--------------------------------------
+    //Route pour afficher les détails d'un produit dans la modale
+    //--------------------------------------
 
     #[Route('/produit/details/{id}', name:'produit_details')]
     public function produits_details(ManagerRegistry $doctrine, $id): Response
@@ -122,7 +130,7 @@ class BaseController extends AbstractController
     }
 
     //--------------------------------------
-    //
+    //fonction pour appliquer un critère de recherche selon la catégorie
     //--------------------------------------
     private function AppliqueCritere($tabProduits, $crit)
     {
@@ -138,7 +146,7 @@ class BaseController extends AbstractController
         return $tabTmp;
     }
     //--------------------------------------
-    //
+    //fonction pour appliquer un critère de recherche selon la barre de recherche
     //--------------------------------------
     private function RechercheBar($tabProduits, $crit)
     {
