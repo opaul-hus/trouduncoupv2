@@ -45,7 +45,7 @@
                 
                 <p  >{{produit.nom}}</p>
                 <strong class="price">$ {{produit.prix}}</strong> </div>
-                <button class="buttonCart"><img src="css/images/cart-link.gif"  alt=""/>Ajouter au panier</button>
+                <a class="buttonCart" href="{{path('app_panier_add',{id: produit.id})}}"><img src="css/images/cart-link.gif"  alt="ajouter"/>Ajouter au panier</a>
             </div>
           </li>
 
@@ -58,7 +58,7 @@
                 
                 <p >{{produit.nom}}</p>
                 <strong class="price">$ {{produit.prix}}</strong> </div>
-                <button class="buttonCart"><img src="css/images/cart-link.gif"  alt=""/>Ajouter au panier</button>
+                <a class="buttonCart" href="{{path('app_panier_add',{id: produit.id})}}"><img src="css/images/cart-link.gif"  alt=""/>Ajouter au panier</a>
 
             </div>
           </li>

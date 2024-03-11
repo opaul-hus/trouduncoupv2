@@ -9,7 +9,7 @@
         <p class="desc">{{produit.description}}</p>
         <p class="quantity">Quantité en stock: <span >{{produit.quanStock}}</span></p>
         <p class="price">Prix: <span id="productPrice">${{produit.prix}}</span></p>
-        <a class="modaleCart"><button class="buttonCart"><img src="css/images/cart-link.gif"  alt=""/>Ajouter au panier</button></a>
+        <a class="buttonCart modaleCart" href="{{path('app_panier_add',{id: produit.id})}}"><img src="css/images/cart-link.gif"  alt=""/>Ajouter au panier</a>
 
     </div>
   </div>

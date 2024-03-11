@@ -7,17 +7,28 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\Persistence\ManagerRegistry;
+
 use App\Entity\Produits;
 use App\Entity\Categories;
 
+use App\Classe\Panier;
+
+
 class BaseController extends AbstractController
 {
+
      //--------------------------------------
     //route de base pour le site affiche tous les produits
     //--------------------------------------
     #[Route('/', name: 'acceuilTroupDunCoup')]
     public function index(ManagerRegistry $doctrine, Request $request): Response
     {
+        $session = $request->getSession();
+        if (!$session->has('panier')) {
+            $session->set('panier', new Panier());
+        }
+        
+        
         $tabProduits = $doctrine->
         getManager()->
         getRepository(Produits::class)->
@@ -165,5 +176,5 @@ class BaseController extends AbstractController
          }
         return $tabTmp;
     }
-
+ 
 }

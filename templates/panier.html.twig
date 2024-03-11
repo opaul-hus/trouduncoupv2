@@ -1,0 +1,166 @@
+{% extends ('base.html.twig') %}
+    {% block stylesheets %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    {% endblock %}
+
+
+{% block javascripts %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+{% endblock %}
+{% block title %}Panier{% endblock %}
+{% block body %}
+<section class="h-100 gradient-custom">
+  <div class="container py-5">
+    <div class="row d-flex justify-content-center my-4">
+      <div class="col-md-8">
+        <div class="card mb-4">
+          <div class="card-header py-3">
+            {% if app.session.get('panier').getNbItems()>1 %}
+        <h5 class="mb-0">Panier - {{ app.session.get('panier').getNbItems() }} Items  
+      {% elseif app.session.get('panier').getNbItems()>0 %}
+        <h5 class="mb-0">Panier - {{ app.session.get('panier').getNbItems() }} Item
+        {% else %}
+        <h5 class="mb-0 text-warning bg-dark" >Votre panier est vide
+      {% endif %}
+            </h5>
+          </div>
+          <form class="card-body" action="{{ path('app_panier_valider') }}" method="POST">
+          {% for produitCart in app.session.get('panier').getPanierItems() %}
+            <!-- Single item -->
+             <div class="row">
+              <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
+                <!-- Image -->
+                <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
+                  <img src="css/images/{{produitCart.produit.id}}.jpg"
+                    class="w-100" alt="{{produitCart.produit.nom}}" 
+                    onerror="this.onerror=null;this.src='css/images/pasImage.jpg';"/>
+                  <a href="#!">
+                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
+                  </a>
+                </div>
+                <!-- Image -->
+              </div>
+
+              <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
+                <!-- Data -->
+                <p><strong>{{produitCart.produit.nom}}</strong></p>
+                <a type="button" class="btn btn-danger btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
+                  title="Remove item" href="{{path('app_panier_remove',{id: produitCart.produit.id})}}">
+                  
+                  <i class="material-icons">delete</i>
+                </a>
+           
+                <!-- Data -->
+              </div>
+
+              <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                <!-- Quantity -->
+                <div class="d-flex mb-4" style="max-width: 300px">
+            
+
+                  <div class="form-outline">
+                    <input id="form1" min="0"  max="20" value="{{produitCart.quantite}}" name="quantity_{{produitCart.produit.id}}"  type="number" class="form-control" />
+                    <label class="form-label" >Quantity</label>
+                  </div>
+
+          
+                </div>
+                <!-- Quantity -->
+
+                <!-- Price -->
+                <p class="text-start text-md-center">
+                  <strong>{{produitCart.produit.getPrix |number_format(2, ',', ',')}} $ x {{produitCart.quantite}} = {{produitCart.getPrixTotal() |number_format(2, ',', ',')}} $</strong>
+                </p>
+                <!-- Price -->
+              </div>
+            </div> 
+            <!-- Single item -->
+           
+            
+            <hr class="my-4" />
+            {% endfor %}
+
+            <div class="row">
+                <a href="/" class="col-3 mx-3 btn btn-primary">
+                        Retour au catalogue
+                </a>
+                  <input  class="col-3 offset-1 btn btn-success" type="submit" value="Valider le panier">
+                    <a href="{{path('app_panier_clear')}}" class="col-3 offset-1 btn btn-danger">
+                        Vider le panier
+                    </a>
+            </div>
+            <!-- Single item -->
+         
+            <!-- Single item -->
+          </form>
+        </div>
+        <div class="card mb-4">
+          <div class="card-body">
+            <p><strong>Délais de livraison</strong></p>
+            <p class="mb-0"> Entre le {{app.session.get('panier').getMinDelDate()|date("m/d/Y")}} et le  {{app.session.get('panier').getMaxDelDate()|date("m/d/Y")}}</p>
+          </div>
+        </div>
+        <div class="card mb-4 mb-lg-0">
+          <div class="card-body">
+            <p><strong>On accept</strong></p>
+            <img class="me-2" width="45px"
+              src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
+              alt="Visa" />
+            <img class="me-2" width="45px"
+              src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg"
+              alt="American Express" />
+            <img class="me-2" width="45px"
+              src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
+              alt="Mastercard" />
+           
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <div class="card-header py-3">
+            <h5 class="mb-0">Sommaire</h5>
+          </div>
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center px-0 ">
+                Produits
+                <span>{{app.session.get('panier').getTotal()|number_format(2, ',', ',')}} $</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center px-0 ">
+                Frais De Livraison
+                <span>9.99 $</span>
+              </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                TPS
+                <span>{{app.session.get('panier').getTps()|number_format(2, ',', ',')}} $</span>
+              </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                TVQ
+                <span>{{app.session.get('panier').getTvq()|number_format(2, ',', ',')}} $</span>
+              </li>
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                <div>
+                  <strong>Grand Total</strong>
+                  <strong>
+                    <p class="mb-0">(incluant TPS ET TVQ)</p>
+                  </strong>
+                </div>
+                <span><strong>{{app.session.get('panier').getGrandTotal()|number_format(2, ',', ',')}} $</strong></span>
+              </li>
+            </ul>
+
+            <button type="button" class="btn btn-primary btn-lg btn-block">
+              Passer la commande
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
