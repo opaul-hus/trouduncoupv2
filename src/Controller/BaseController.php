@@ -17,7 +17,7 @@ use App\Classe\Panier;
 class BaseController extends AbstractController
 {
 
-     //--------------------------------------
+    //--------------------------------------
     //route de base pour le site affiche tous les produits
     //--------------------------------------
     #[Route('/', name: 'acceuilTroupDunCoup')]

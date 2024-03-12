@@ -102,16 +102,30 @@
     }
 
     #messageCriteria{
-        text-align: center;
-        margin-top: 20px;
+        
+        
         color:  whitesmoke;
-        background-color: orangered;
-        padding: 10px;
+        background-color: #8b0000;
+        text-align: center;
+        margin-bottom: 30px;
+        padding: 20px 20px;
+        border-radius: 5px;
+        -webkit-box-shadow: 0 2px 48px 0 rgba(0, 0, 0, 0.08);
+        box-shadow: 0 2px 48px 0 rgba(0, 0, 0, 0.08);
+                
+        border-top: 3px  solid green;
     }
-
-    .gradient-custom {
+    #messageCart{
         
-        background:green;
         
-
-        }
+        color:  whitesmoke;
+        background-color: #8b0000;
+        text-align: center;
+        margin-bottom: 30px;
+        padding: 20px 20px;
+        border-radius: 5px;
+        -webkit-box-shadow: 0 2px 48px 0 rgba(0, 0, 0, 0.08);
+        box-shadow: 0 2px 48px 0 rgba(0, 0, 0, 0.08);
+                
+        border-top: 3px  solid green;
+    }
