@@ -26,9 +26,9 @@
           <div class="card-header py-3">
 
             {% if app.session.get('panier').getNbItems()==1 %}
-        <h5 class="mb-0">Panier - {{ app.session.get('panier').getNbItems() }} Items  
+        <h5 class="mb-0">Panier - {{ app.session.get('panier').getNbItems() }} Item 
       {% elseif app.session.get('panier').getNbItems()>0 %}
-        <h5 class="mb-0">Panier - {{ app.session.get('panier').getNbItems() }} Item
+        <h5 class="mb-0">Panier - {{ app.session.get('panier').getNbItems() }} Items
       {% endif %}
             </h5>
           </div>
