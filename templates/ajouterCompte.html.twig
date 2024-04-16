@@ -1,0 +1,89 @@
+{% extends ('base.html.twig') %}
+    {% block stylesheets %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="{{asset('css/custom.css')}}" type="text/css" media="all" />
+    {% endblock %}
+
+
+{% block javascripts %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+{% endblock %}
+{% block title %}Créer un nouveau compte{% endblock %}
+{% block body %}
+<div class="container">
+           <div class="row col-6 mx-auto">    
+                <h3 id="formTitle">Créer un nouveau compte</h3>
+                {{ form_start(form) }}
+            <section class="mt-2">
+            {{form_label(form.username, 'Nom d\'utilisateur :')}}
+            {{form_widget(form.username,{attr:{'class':' form-control'} })}}
+            {{form_errors(form.username)}}
+            </section>
+                 <section  class="mt-2">
+            {{form_label(form.prenom, 'Prénom:')}}
+            {{form_widget(form.prenom,{attr:{'class':' form-control'} })}}
+            {{form_errors(form.prenom)}}
+            </section class="mt-2">
+                 <section class="mt-2">
+            {{form_label(form.nom, 'Nom :')}}
+            {{form_widget(form.nom,{attr:{'class':' form-control'} })}}
+            {{form_errors(form.nom)}}
+            </section>
+                 <section class="mt-2">
+            {{form_label(form.genre, 'Genre :')}}
+            {{form_widget(form.genre,{attr:{'class':' form-control'} })}}
+            {{form_errors(form.genre)}}
+            </section>
+                 <section class="mt-2">
+            {{form_label(form.adresse, 'Adresse :')}}
+            {{form_widget(form.adresse,{attr:{'class':' form-control'} })}}
+            {{form_errors(form.adresse)}}
+            </section>
+                 <section class="mt-2">
+            {{form_label(form.ville, 'Ville :')}}
+            {{form_widget(form.ville,{attr:{'class':' form-control'} })}}
+            {{form_errors(form.ville)}}
+            </section>
+                 <section class="mt-2">
+            {{form_label(form.province, 'Province :')}}
+            {{form_widget(form.province,{attr:{'class':' form-control'} })}}
+            {{form_errors(form.province)}}
+            </section>
+                 <section class="mt-2">
+            {{form_label(form.codePostal, 'Code postal:')}}
+            {{form_widget(form.codePostal,{attr:{'class':' form-control'} })}}
+            {{form_errors(form.codePostal)}}
+            </section>
+                    <section class="mt-2">
+            {{form_label(form.numeroTel, 'Numéro de téléphone:')}}
+            {{form_widget(form.numeroTel,{attr:{'class':' form-control'} })}}
+            {{form_errors(form.numeroTel)}}
+            </section>
+            <section class="mt-2">
+            {{form_label(form.email, 'Adresse courriel:')}}
+            {{form_widget(form.email,{attr:{'class':' form-control'} })}}
+            {{form_errors(form.email)}}
+            </section>
+                       <section class="mt-2">
+            {{form_label(form.password.first, 'Mot de passe:')}}
+            {{form_widget(form.password.first,{attr:{'class':' form-control'} })}}
+            {{form_errors(form.password.first)}}
+            </section>
+            </section>
+                       <section class="mt-2">
+            {{form_label(form.password.second, 'Confirmation mot de passe:')}}
+            {{form_widget(form.password.second,{attr:{'class':' form-control'} })}}
+            {{form_errors(form.password.second)}}
+            </section>
+            <section class="mt-3 mb-1 justify-content-center d-flex">
+            {{ form_widget(form.sauvegarder, {'attr': {'class':'btn btn-success mx-auto'} } ) }}
+            </section>
+            
+                {{form_end(form)}}
+
+            </div>
+        </div>
+{% endblock %}
+                
