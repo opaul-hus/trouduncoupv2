@@ -13,46 +13,106 @@
 
 {% block title %}Dossier de compte{% endblock %}
 {% block body %}
-{% if app.session.get('compte_connecte') is defined %}
-
-
+    {% for message in app.flashes('notice') %} 
+    <div class="flash-notice">
+    <h2 id="messageCart" class="mt-3">{{message}}</h2>
+    </div>
+    {% endfor %}
+    {% for message in app.flashes('erreur') %} 
+    <div class="flash-notice">
+    <h2 id="messageCart" class="mt-3">{{message}}</h2>
+    </div>
+    {% endfor %}
 <div class="container">
+<h3 id="formTitle" class="mx-auto col-10 mt-5 mb-5 ">Dossier de compte</h3>
     <div class="row col-6 mx-auto">    
-        <h3 id="formTitle">Dossier de compte</h3>
+    <h5 class="mt-2">Modification des informations</h5>
+        
+        
+
+                    {{ form_start(form) }}
+                    
+            <section class="mt-2">
+            {{form_label(form.username, 'Nom d\'utilisateur :')}}
+            {{form_widget(form.username,{attr:{'class':' form-control'} })}}
+            {{form_errors(form.username)}}
+            </section>
+                 <section  class="mt-2">
+            {{form_label(form.prenom, 'Prénom:')}}
+            {{form_widget(form.prenom,{attr:{'class':' form-control'} })}}
+            {{form_errors(form.prenom)}}
+            </section >
+                 <section class="mt-2">
+            {{form_label(form.nom, 'Nom :')}}
+            {{form_widget(form.nom,{attr:{'class':' form-control'} })}}
+            {{form_errors(form.nom)}}
+            </section>
+                 <section class="mt-2">
+            {{form_label(form.genre, 'Genre :')}}
+            {{form_widget(form.genre,{attr:{'class':' form-control'} })}}
+            {{form_errors(form.genre)}}
+            </section>
+                 <section class="mt-2">
+            {{form_label(form.adresse, 'Adresse :')}}
+            {{form_widget(form.adresse,{attr:{'class':' form-control'} })}}
+            {{form_errors(form.adresse)}}
+            </section>
+                 <section class="mt-2">
+            {{form_label(form.ville, 'Ville :')}}
+            {{form_widget(form.ville,{attr:{'class':' form-control'} })}}
+            {{form_errors(form.ville)}}
+            </section>
+                 <section class="mt-2">
+            {{form_label(form.province, 'Province :')}}
+            {{form_widget(form.province,{attr:{'class':' form-control'} })}}
+            {{form_errors(form.province)}}
+            </section>
+                 <section class="mt-2">
+            {{form_label(form.codePostal, 'Code postal:')}}
+            {{form_widget(form.codePostal,{attr:{'class':' form-control'} })}}
+            {{form_errors(form.codePostal)}}
+            </section>
+                    <section class="mt-2">
+            {{form_label(form.numeroTel, 'Numéro de téléphone:')}}
+            {{form_widget(form.numeroTel,{attr:{'class':' form-control'} })}}
+            {{form_errors(form.numeroTel)}}
+            </section>
+            <section class="mt-2">
+            {{form_label(form.email, 'Adresse courriel:')}}
+            {{form_widget(form.email,{attr:{'class':' form-control'} })}}
+            {{form_errors(form.email)}}
+            </section>
+            <section class="mt-3 mb-1 justify-content-center d-flex">
+            {{ form_widget(form.sauvegarder, {'attr': {'class':'btn btn-success mx-auto'} } ) }}
+            </section>
+            
+                {{form_end(form)}}
+
+    </div>
+    <hr>
+    <div class="row col-6 mx-auto">
+                <h5 class="mt-2">Modification du mot de passe</h5>
+                {{ form_start(formPassword) }}
         <section class="mt-2">
-            <p><strong>Nom d'utilisateur :</strong> {{app.session.get('compte_connecte').username}}</p>
-        </section>
-        <section class="mt-2">
-            <p><strong>Prénom :</strong> {{app.session.get('compte_connecte').prenom}}</p>
-        </section>
-        <section class="mt-2">
-            <p><strong>Nom :</strong> {{app.session.get('compte_connecte').nom}}</p>
-        </section>
-        <section class="mt-2">
-            <p><strong>Genre :</strong> {{app.session.get('compte_connecte').genre}}</p>
-        </section>
-        <section class="mt-2">
-            <p><strong>Adresse :</strong> {{app.session.get('compte_connecte').adresse}}</p>
-        </section>
-        <section class="mt-2">
-            <p><strong>Ville :</strong> {{app.session.get('compte_connecte').ville}}</p>
-        </section>
-        <section class="mt-2">
-            <p><strong>Province :</strong> {{app.session.get('compte_connecte').province}}</p>
-        </section>
-        <section class="mt-2">
-            <p><strong>Code postal :</strong> {{app.session.get('compte_connecte').codePostal}}</p>
-        </section>
-        <section class="mt-2">
-            <p><strong>Numéro de téléphone :</strong> {{app.session.get('compte_connecte').numeroTel}}</p>
-        </section>
+            {{form_label(formPassword.oldpassword, 'Ancien mot de passe:')}}
+            {{form_widget(formPassword.oldpassword,{attr:{'class':' form-control'} })}}
+            {{form_errors(formPassword.oldpassword)}}
+            </section>
+            <section class="mt-2">
+            {{form_label(formPassword.newpassword.first, ' Nouveau Mot de passe:')}}
+            {{form_widget(formPassword.newpassword.first,{attr:{'class':' form-control'} })}}
+            {{form_errors(formPassword.newpassword.first)}}
+            </section>
+            
+                       <section class="mt-2">
+            {{form_label(formPassword.newpassword.second, 'Confirmation du nouveau mot de passe:')}}
+            {{form_widget(formPassword.newpassword.second,{attr:{'class':' form-control'} })}}
+            {{form_errors(formPassword.newpassword.second)}}
+            </section>
+              <section class="mt-3 mb-1 justify-content-center d-flex">
+            {{ form_widget(formPassword.confirmer, {'attr': {'class':'btn btn-success mx-auto'} } ) }}
+            </section>
+                {{form_end(formPassword)}}
     
     </div>
-
-
-{% else %}
-
-
-
-{% endif %}
 {% endblock %}

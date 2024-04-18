@@ -18,11 +18,11 @@ class Compte
     private ?string $username = null;
 
     #[ORM\Column(length: 15)]
-    #[Assert\Regex(pattern:'/^[a-z]{2,15}$/i', match:true, message:'La taille ou le contenu non conforme')]
+    #[Assert\Regex(pattern:'/^\S{2,15}$/i', match:true, message:'La taille ou le contenu non conforme')]
     private ?string $prenom = null;
 
     #[ORM\Column(length: 15)]
-    #[Assert\Regex(pattern:'/^[a-z]{2,15}$/i', match:true, message:'La taille ou le contenu non conforme')]
+    #[Assert\Regex(pattern:'/^\S{2,15}$/i', match:true, message:'La taille ou le contenu non conforme')]
     private ?string $nom = null;
 
     #[ORM\Column(length: 10)]
@@ -30,11 +30,11 @@ class Compte
     private ?string $genre = null;
 
     #[ORM\Column(length: 15)]
-    #[Assert\Regex(pattern: '/^\d+.*/', match: true, message: 'L\'adrersse doit commencer avec un chiffre suivi du nom de la rue.')]
+    #[Assert\Regex(pattern: '/^\d+.+\S/', match: true, message: 'L\'adrersse doit commencer avec un chiffre suivi du nom de la rue.')]
     private ?string $adresse = null;
 
     #[ORM\Column(length: 15)]
-    #[Assert\Regex(pattern:'/^[a-z]{2,15}$/i', match:true, message:'La taille ou le contenu non conforme')]
+    #[Assert\Regex(pattern:'/^\S{2,15}$/i', match:true, message:'La taille ou le contenu non conforme')]
     private ?string $ville = null;
 
     #[ORM\Column(length: 15)]

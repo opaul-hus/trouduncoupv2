@@ -10,11 +10,27 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\RequestStack;
 
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 
 class ClientType extends AbstractType
 {
+
+    
+    private $em;
+
+    public function __construct(EntityManagerInterface $entityManager,private RequestStack $requestStack) {
+        $this->em = $entityManager;
+        
+    }
+  
+    //-----------------------------------------------------------------------------
+    //fonction qui construit le formulaire
+    //on ajoute les champs du formulaire
+    //on ajoute un evenement pour verifier si le nom d'utilisateur est deja utilise
+    //on ajoute un evenement pour formater le code postal et le numero de telephone
+    //-----------------------------------------------------------------------------
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $requis = true;
@@ -71,9 +87,19 @@ class ClientType extends AbstractType
                 // this would be your entity, i.e. SportMeetup
                 $data = $event->getData();
 
-                if ($this->dbContains($data['username'])) {
-                    # code...
-                    $form->addError(new FormError('Ce nom d\'utilisateur est déjà utilisé'));
+                
+                if ($this->dbContains($data['username'])){
+                    if (!$this->requestStack->getSession()->has('compte_connecte')) {
+                        $form->addError(new FormError('Ce nom d\'utilisateur est déjà utilisé'));
+                    }
+                    else{
+                        if ($this->requestStack->getSession()->get('compte_connecte')->getUsername() != $data['username']) {
+                            $form->addError(new FormError('Ce nom d\'utilisateur est déjà utilisé'));
+                        }
+
+                    }
+                    
+                    
                 }
                 $data['codePostal'] = $this->convertPostalCode($data['codePostal']);
                 $data['numeroTel'] = $this->convertPhoneNumber($data['numeroTel']);
@@ -89,7 +115,13 @@ class ClientType extends AbstractType
         ]);
     }
 
+ 
+    
 
+    //-----------------------------------------------------------------------------
+    //fonction qui formate le code postal
+    //on enleve les espaces et on ajoute un espace entre les 3 premiers caracteres et les 3 derniers
+    //-----------------------------------------------------------------------------
     private function convertPostalCode($codePostal)
     {
         $codePostal = strtoupper($codePostal);
@@ -98,6 +130,10 @@ class ClientType extends AbstractType
         return $codePostal;
     }
 
+    //-----------------------------------------------------------------------------
+    //fonction qui formate le numero de telephone
+    //on enleve les espaces, les tirets, les parentheses, les points et le signe plus
+    //-----------------------------------------------------------------------------
     private function convertPhoneNumber($numeroTel)
     {
         $numeroTel = str_replace(' ', '', $numeroTel);
@@ -109,11 +145,14 @@ class ClientType extends AbstractType
         return $numeroTel;
     }
 
-    private function dbContains($username,ManagerRegistry $doctrine)
+    //-----------------------------------------------------------------------------
+    //fonction qui verifie si le nom d'utilisateur est deja dans la base de donnees
+    //-----------------------------------------------------------------------------
+    private function dbContains($username)
     {
-        $compte = $doctrine
-            ->getRepository(Compte::class)
-            ->findOneBy(['username' => $username]);
+        
+        $compte = $this->em->getRepository(Compte::class)->findOneBy(['username' => $username]);
+            
 
         if ($compte) return true;
         return false;

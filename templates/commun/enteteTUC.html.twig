@@ -20,10 +20,17 @@
     <div id="navigation">
       <ul>
         <li><a href="/" class="nav-item" >Accueil</a></li>
-        <li><a href="/ajouterCompte" class="nav-item">Inscription</a></li>
-        <li><a href="/a_propos" class="nav-item">A Propos</a></li>
-        <li><a href="/detailsCompte" class="nav-item">Mon Compte</a></li>
         
+        <li><a href="/a_propos" class="nav-item">A Propos</a></li>
+        {% if app.session.get('compte_connecte') !=null %}
+        <li><a href="/deconnexion" class="nav-item">Déconnexion</a></li>
+        <li><a href="/compte" class="nav-item">Modifier vos infos</a></li>
+        <li><a href="/" class="nav-item">Mes achats</a></li>
+
+        {% else %}
+        <li><a href="/ajouterCompte" class="nav-item">Inscription</a></li>
+        <li><a href="/connexion" class="nav-item">Connexion</a></li>
+        {% endif %}
       </ul>
     </div>
     <!-- End Navigation -->
