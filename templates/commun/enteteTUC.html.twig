@@ -23,10 +23,10 @@
         
         <li><a href="/a_propos" class="nav-item">A Propos</a></li>
         {% if app.session.get('compte_connecte') !=null %}
-        <li><a href="/deconnexion" class="nav-item">Déconnexion</a></li>
+        
         <li><a href="/compte" class="nav-item">Modifier vos infos</a></li>
         <li><a href="/" class="nav-item">Mes achats</a></li>
-
+        <li><a href="/deconnexion" class="nav-item">Déconnexion</a></li>
         {% else %}
         <li><a href="/ajouterCompte" class="nav-item">Inscription</a></li>
         <li><a href="/connexion" class="nav-item">Connexion</a></li>
