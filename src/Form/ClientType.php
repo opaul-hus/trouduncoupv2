@@ -84,23 +84,12 @@ class ClientType extends AbstractType
             function (FormEvent $event): void {
 
                 $form = $event->getForm();
-                // this would be your entity, i.e. SportMeetup
                 $data = $event->getData();
 
-                
-                if ($this->dbContains($data['username'])){
-                    if (!$this->requestStack->getSession()->has('compte_connecte')) {
-                        $form->addError(new FormError('Ce nom d\'utilisateur est déjà utilisé'));
-                    }
-                    else{
-                        if ($this->requestStack->getSession()->get('compte_connecte')->getUsername() != $data['username']) {
-                            $form->addError(new FormError('Ce nom d\'utilisateur est déjà utilisé'));
-                        }
-
-                    }
-                    
-                    
-                }
+                if (!$this->requestStack->getSession()->has('compte_connecte')&&$this->dbContains($data['username'])) {
+                $form->addError(new FormError('Ce nom d\'utilisateur est déjà utilisé'));
+            }
+            
                 $data['codePostal'] = $this->convertPostalCode($data['codePostal']);
                 $data['numeroTel'] = $this->convertPhoneNumber($data['numeroTel']);
             

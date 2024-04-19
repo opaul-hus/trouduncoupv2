@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\Persistence\ManagerRegistry;
 
 use App\Classe\NewPassword;
+use App\Classe\Util;
 
 
 class CompteController extends AbstractController
@@ -68,6 +69,10 @@ class CompteController extends AbstractController
     #[Route('/insererCompte', name: 'inserer_compte')]
     public function inserer(ManagerRegistry $doctrine,Request $request): Response
     {
+        if(Util::Secure($request,'POSSIBLE'))
+        {
+            return $this->redirectToRoute('acceuilTroupDunCoup');
+       
         $request->getSession()->set('compte_connecte', $request->getSession()->get('client_possible'));
         $em = $doctrine->getManager();
         $em->persist($request->getSession()->get('client_possible'));
@@ -75,6 +80,12 @@ class CompteController extends AbstractController
         $em->flush();
         $this->addFlash('notice', 'Compte ajouté avec succès , Bienvenue '.$request->getSession()->get('compte_connecte')->getUsername());
         return $this->redirectToRoute('acceuilTroupDunCoup');
+        }
+        else
+        {
+            $this->addFlash('notice', 'Tetative de fraude détectée, veuillez soumettre un formulaire de nouveau compte pour continuer.');
+            return $this->redirectToRoute('acceuilTroupDunCoup');
+        }
     }
 
     ///--------------------------------------
@@ -84,8 +95,18 @@ class CompteController extends AbstractController
     #[Route('/comptePossible', name: 'compte_possible')]
     public function dossierComptePossible(ManagerRegistry $doctrine,Request $request): Response
     {
+        
+        if(Util::Secure($request,'POSSIBLE'))
+        {
+            return $this->render('comptePossible.html.twig');
+        }
+        else
+        {
+            $this->addFlash('notice', 'Tetative de fraude détectée, veuillez soumettre un formulaire de nouveau compte pour continuer.');
+            return $this->redirectToRoute('acceuilTroupDunCoup');
+        }
 
-        return $this->render('comptePossible.html.twig');
+        
     }
 
     ///--------------------------------------
@@ -96,84 +117,98 @@ class CompteController extends AbstractController
     #[Route('/compte', name: 'compte')]
     public function dossierCompte(ManagerRegistry $doctrine,Request $request): Response
     {
-        $compte = $request->getSession()->get('compte_connecte');
-        $form = $this->createForm(ClientType::class, $compte);
-        $form->remove('password');
-        $form->handleRequest($request);
-         $possibleNewPassword = new NewPassword();
-         $formPassword = $this->createForm(ModifyPasswordType::class, $possibleNewPassword);
-         $formPassword->handleRequest($request);
         
-
-        if ($form->isSubmitted())
+        if(Util::Secure($request))
         {
-                   //Est-ce que les donnée de l'utilsateurs sont valides
-                   if ($form->isValid())
-                   {
-                    
-                          $em = $doctrine->getManager();
-                          $compteAMod = $em->getRepository(Compte::class)->find($compte->getId());
-                            $compteAMod->setNom($compte->getNom());
-                            $compteAMod->setPrenom($compte->getPrenom());
-                            $compteAMod->setAdresse($compte->getAdresse());
-                            $compteAMod->setVille($compte->getVille());
-                            $compteAMod->setProvince($compte->getProvince());
-                            $compteAMod->setGenre($compte->getGenre());
-                            $compteAMod->setCodePostal($compte->getCodePostal());
-                            $compteAMod->setNumeroTel($compte->getNumeroTel());
-                            $compteAMod->setUsername($compte->getUsername());
-                            $compteAMod->setEmail($compte->getEmail());
-                          $em->flush();
-                          $this->addFlash('notice', 'Compte modifié avec succès');
-                          
-          
-                   }
-                   else
-                   {
-                        foreach ($form->getErrors(true) as $error)
-                        {
-                            $this->addFlash('erreur', $error->getMessage());
+           
+            $compte = $request->getSession()->get('compte_connecte');
+            $form = $this->createForm(ClientType::class, $compte);
+            $form->remove('password');
+            $form->remove('username');
+            $form->handleRequest($request);
+            
+             $possibleNewPassword = new NewPassword();
+             
+             $formPassword = $this->createForm(ModifyPasswordType::class, $possibleNewPassword);
+             
+             $formPassword->handleRequest($request);
+            
+             
+            if ($form->isSubmitted())
+            {
+                       //Est-ce que les donnée de l'utilsateurs sont valides
+                       if ($form->isValid())
+                       {
+                        
+                              $em = $doctrine->getManager();
+                              $compteAMod = $em->getRepository(Compte::class)->find($compte->getId());
+                                $compteAMod->setNom($compte->getNom());
+                                $compteAMod->setPrenom($compte->getPrenom());
+                                $compteAMod->setAdresse($compte->getAdresse());
+                                $compteAMod->setVille($compte->getVille());
+                                $compteAMod->setProvince($compte->getProvince());
+                                $compteAMod->setGenre($compte->getGenre());
+                                $compteAMod->setCodePostal($compte->getCodePostal());
+                                $compteAMod->setNumeroTel($compte->getNumeroTel());
+                                $compteAMod->setEmail($compte->getEmail());
+                              $em->flush();
+                              $this->addFlash('notice', 'Compte modifié avec succès');
+                              
+              
+                       }
+                       else
+                       {
+                            foreach ($form->getErrors(true) as $error)
+                            {
+                                $this->addFlash('erreur', $error->getMessage());
+                            }
                         }
-                    }
-
+    
+            }
+    
+            if ($formPassword->isSubmitted())
+            {
+                       //Est-ce que les donnée de l'utilsateurs sont valides
+                       if ($formPassword->isValid())
+                       {
+    
+    
+                        if ($compte->getPassword() != $possibleNewPassword->getOldPassword()){
+                            $this->addFlash('erreur', "Ancien mot de passe incorrect");
+                            return $this->render('dossierCompte.html.twig',[
+                                'form' => $form->createView(),
+                                'formPassword' => $formPassword->createView()
+                            ]);
+                        }
+                        
+                              $em = $doctrine->getManager();
+                              $compteAMod = $em->getRepository(Compte::class)->find($compte->getId());
+                              $compteAMod->setPassword($possibleNewPassword->getNewPassword());
+                              $em->flush();
+                              $this->addFlash('notice', 'Mot de passe modifié avec succès');
+                              
+              
+                       }
+                       else
+                       {
+                            foreach ($formPassword->getErrors(true) as $error)
+                            {
+                                $this->addFlash('erreur', $error->getMessage());
+                            }
+                        }
+    
+            }
+            return $this->render('dossierCompte.html.twig',[
+                'form' => $form->createView(),
+                'formPassword' => $formPassword->createView()
+            ]);
+        }
+        else
+        {
+            $this->addFlash('notice', 'Tetative de fraude détectée, veuillez vous connecter pour continuer.');
+            return $this->redirectToRoute('acceuilTroupDunCoup');
         }
 
-        if ($formPassword->isSubmitted())
-        {
-                   //Est-ce que les donnée de l'utilsateurs sont valides
-                   if ($formPassword->isValid())
-                   {
-
-
-                    if ($compte->getPassword() != $possibleNewPassword->getOldPassword()){
-                        $this->addFlash('erreur', "Ancien mot de passe incorrect");
-                        return $this->render('dossierCompte.html.twig',[
-                            'form' => $form->createView(),
-                            'formPassword' => $formPassword->createView()
-                        ]);
-                    }
-                    
-                          $em = $doctrine->getManager();
-                          $compteAMod = $em->getRepository(Compte::class)->find($compte->getId());
-                          $compteAMod->setPassword($possibleNewPassword->getNewPassword());
-                          $em->flush();
-                          $this->addFlash('notice', 'Mot de passe modifié avec succès');
-                          
-          
-                   }
-                   else
-                   {
-                        foreach ($formPassword->getErrors(true) as $error)
-                        {
-                            $this->addFlash('erreur', $error->getMessage());
-                        }
-                    }
-
-        }
-        return $this->render('dossierCompte.html.twig',[
-            'form' => $form->createView(),
-            'formPassword' => $formPassword->createView()
-        ]);
     }
     ///--------------------------------------
     //route pour deconnecter un compte
