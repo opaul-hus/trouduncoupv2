@@ -71,8 +71,6 @@ class CompteController extends AbstractController
     {
         if(Util::Secure($request,'POSSIBLE'))
         {
-            return $this->redirectToRoute('acceuilTroupDunCoup');
-       
         $request->getSession()->set('compte_connecte', $request->getSession()->get('client_possible'));
         $em = $doctrine->getManager();
         $em->persist($request->getSession()->get('client_possible'));
@@ -262,6 +260,9 @@ class CompteController extends AbstractController
                         }
                     }
 
+        }
+        if ($request->getSession()->get('panier_commande')!=null) {
+            return $this->redirectToRoute('app_commande');
         }
 
         return $this->render('connexion.html.twig', [
