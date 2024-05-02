@@ -17,10 +17,10 @@
       <div id="slider" class="box">
         <div id="slider-holder">
           <ul>
-            <li><a href="#"><img src="css/images/golf1.jpg" alt="" /></a></li>
-            <li><a href="#"><img src="css/images/golf2.jpg" alt="" /></a></li>
-            <li><a href="#"><img src="css/images/golf3.jpg" alt="" /></a></li>
-            <li><a href="#"><img src="css/images/golf4.jpg" alt="" /></a></li>
+            <li><a href="#"><img src="/images/golf1.jpg" alt="" /></a></li>
+            <li><a href="#"><img src="/images/golf2.jpg" alt="" /></a></li>
+            <li><a href="#"><img src="/images/golf3.jpg" alt="" /></a></li>
+            <li><a href="#"><img src="/images/golf4.jpg" alt="" /></a></li>
           </ul>
         </div>
         <div id="slider-nav"> <a href="#" class="active">1</a> <a href="#">2</a> <a href="#">3</a> <a href="#">4</a> </div>
@@ -38,27 +38,27 @@
         
         {% for produit in tabProduits %}
           {% if loop.index%3==0 %}
-          <li class="last "  > <a class="boutonModal" href="{{ path('produit_details',{id: produit.id})}}"><img src="css/images/{{produit.id}}.jpg" alt="{{produit.nom}}" class="product-img" onerror="this.onerror=null;this.src='css/images/pasImage.jpg';"></a>
+          <li class="last "  > <a class="boutonModal" href="{{ path('produit_details',{id: produit.id})}}"><img src="/images/{{produit.id}}.jpg" alt="{{produit.nom}}" class="product-img" onerror="this.onerror=null;this.src='/images/pasImage.jpg';"></a>
             <div class="product-info">
               <h3>{{produit.categorie.nom}}</h3>
               <div class="product-desc">
                 
                 <p  >{{produit.nom}}</p>
                 <strong class="price">$ {{produit.prix}}</strong> </div>
-                <a class="buttonCart" href="{{path('app_panier_add',{id: produit.id})}}"><img src="css/images/cart-link.gif"  alt="ajouter"/>Ajouter au panier</a>
+                <a class="buttonCart" href="{{path('app_panier_add',{id: produit.id})}}"><img src="/images/cart-link.gif"  alt="ajouter"/>Ajouter au panier</a>
             </div>
           </li>
 
           {% else %}
  
-          <li > <a    class="boutonModal" href="{{ path('produit_details',{id: produit.id})}}"><img src="css/images/{{produit.id}}.jpg" alt="{{produit.nom}}" class="product-img" onerror="this.onerror=null;this.src='css/images/pasImage.jpg';" /></a>
+          <li > <a    class="boutonModal" href="{{ path('produit_details',{id: produit.id})}}"><img src="/images/{{produit.id}}.jpg" alt="{{produit.nom}}" class="product-img" onerror="this.onerror=null;this.src='/images/pasImage.jpg';" /></a>
             <div class="product-info">
               <h3>{{produit.categorie.nom}}</h3>
               <div class="product-desc">
                 
                 <p >{{produit.nom}}</p>
                 <strong class="price">$ {{produit.prix}}</strong> </div>
-                <a class="buttonCart" href="{{path('app_panier_add',{id: produit.id})}}"><img src="css/images/cart-link.gif"  alt=""/>Ajouter au panier</a>
+                <a class="buttonCart" href="{{path('app_panier_add',{id: produit.id})}}"><img src="/images/cart-link.gif"  alt=""/>Ajouter au panier</a>
 
             </div>
           </li>

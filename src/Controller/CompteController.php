@@ -245,6 +245,10 @@ class CompteController extends AbstractController
                        {
                            $request->getSession()->set('compte_connecte', $compte);
                            $this->addFlash('notice', 'Bienvenue '.$compte->getUsername());
+                           if ($request->getSession()->get('pannier')!=null&&$request->getSession()->get('pannier')->getNbProduits() > 0){
+                       
+                            return $this->redirectToRoute('app_commande');
+                        }
                            return $this->redirectToRoute('acceuilTroupDunCoup');
                        }
                        else
@@ -261,9 +265,7 @@ class CompteController extends AbstractController
                     }
 
         }
-        if ($request->getSession()->get('panier_commande')!=null) {
-            return $this->redirectToRoute('app_commande');
-        }
+    
 
         return $this->render('connexion.html.twig', [
             'form' => $form->createView(),

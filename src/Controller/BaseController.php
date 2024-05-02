@@ -133,7 +133,7 @@ class BaseController extends AbstractController
        return $this->render("detailsProduit.html.twig", ['produit' => $produit]);
 
     }
-    #[Route('/a_propos', name:'produit_ajout')]
+    #[Route('/a_propos', name:'about_us')]
     public function about_us(ManagerRegistry $doctrine, Request $request): Response
     {
 
