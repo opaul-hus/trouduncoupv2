@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProduitsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProduitsRepository::class)]
@@ -29,8 +31,16 @@ class Produits
     private ?int $quanMin = null;
 
     #[ORM\ManyToOne(inversedBy: 'produits')]
-    #[ORM\JoinColumn(nullable: false)]
+    
     private ?Categories $categorie = null;
+
+    #[ORM\OneToMany(targetEntity: CommandeDetail::class, mappedBy: 'produits')]
+    private Collection $CommandeDetail;
+
+    public function __construct()
+    {
+        $this->CommandeDetail = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -105,6 +115,36 @@ class Produits
     public function setCategorie(?Categories $categorie): static
     {
         $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CommandeDetail>
+     */
+    public function getCommandeDetail(): Collection
+    {
+        return $this->CommandeDetail;
+    }
+
+    public function addCommandeDetail(CommandeDetail $commandeDetail): static
+    {
+        if (!$this->CommandeDetail->contains($commandeDetail)) {
+            $this->CommandeDetail->add($commandeDetail);
+            $commandeDetail->setProduits($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommandeDetail(CommandeDetail $commandeDetail): static
+    {
+        if ($this->CommandeDetail->removeElement($commandeDetail)) {
+            // set the owning side to null (unless already changed)
+            if ($commandeDetail->getProduits() === $this) {
+                $commandeDetail->setProduits(null);
+            }
+        }
 
         return $this;
     }

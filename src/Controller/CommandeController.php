@@ -7,10 +7,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 
+use Doctrine\Persistence\ManagerRegistry;
+
 use App\Classe\ProduitPanier;
 use App\Classe\Panier;
 
 use App\Entity\Produits;
+use App\Entity\Commande;
+use App\Entity\CommandeDetail;
 
 class CommandeController extends AbstractController
 {
@@ -48,16 +52,47 @@ class CommandeController extends AbstractController
     }   
 
     #[Route('/commande/valider', name: 'app_commande_valider')]
-    public function valider(Request $request): Response
+    public function valider(Request $request,ManagerRegistry $doctrine): Response
     {
         $panier= $request->getSession()->get('panier');
         $user = $request->getSession()->get('compte_connecte');
-        $em = $this->getDoctrine()->getManager();
+        $em = $doctrine->getManager();
         $commande = new Commande();
-        $commande->setDateCommande(new \DateTime());
+        $commande->setDate(new \DateTime());
         $commande->setCompte($user);
-        $commande->setDetailCommande($panier->getProduits());
+        
+        $em->persist($commande);
+        $em->flush();
+        
 
+
+        foreach ($panier->getPanierItems() as $panierItem){
+            
+           
+            $produitInventaireQuantity = $em->getRepository(Produits::class)->find($panierItem->getProduit()->getId());
+
+            $commandeDetails=new CommandeDetail();
+            $commandeDetails->setProduits($panierItem->getProduit());
+            $commandeDetails->setQuantite($panierItem->getQuantite());
+            $commandeDetails->setCommande($commande);
+             if ( ($panierItem->getQuantite()>$produitInventaireQuantity->getQuanStock())) {
+                $commandeDetails->setQunatiteRupture($panierItem->getQuantite()-$produitInventaireQuantity);
+                
+             }
+             $produitInventaireQuantity->setQuanStock($produitInventaireQuantity->getQuanStock()-$panierItem->getQuantite());
+             $em->persist($commandeDetails);
+             $em->flush();
+            
+
+
+             
+        
+
+        }
+     
+        return $this->redirectToRoute('app_panier_clear');
+
+    
 
     }
 }

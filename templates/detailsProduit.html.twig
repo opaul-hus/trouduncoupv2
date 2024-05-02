@@ -3,13 +3,13 @@
   <div class="grid-container">
     <div class="grid-item">
         <h2 class="title">{{produit.nom}}</h2>
-        <p><img src="/images/{{produit.id}}_2.jpg" alt="{{produit.nom}}" class="product-img" onerror="this.onerror=null;this.src='/images/pasImage.jpg';"></p>
+        <p><img src="css/images/{{produit.id}}_2.jpg" alt="{{produit.nom}}" class="product-img" onerror="this.onerror=null;this.src='css/images/pasImage.jpg';"></p>
     </div>
     <div class="grid-item">
         <p class="desc">{{produit.description}}</p>
         <p class="quantity">Quantité en stock: <span >{{produit.quanStock}}</span></p>
         <p class="price">Prix: <span id="productPrice">${{produit.prix}}</span></p>
-        <a class="buttonCart modaleCart" href="{{path('app_panier_add',{id: produit.id})}}"><img src="/images/cart-link.gif"  alt=""/>Ajouter au panier</a>
+        <a class="buttonCart modaleCart" href="{{path('app_panier_add',{id: produit.id})}}"><img src="css/images/cart-link.gif"  alt=""/>Ajouter au panier</a>
 
     </div>
   </div>

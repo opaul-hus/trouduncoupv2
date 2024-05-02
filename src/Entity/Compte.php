@@ -59,11 +59,17 @@ class Compte
     #[Assert\Regex(pattern:'/^.{2,15}$/i', match:true, message:'La taille ou le contenu non conforme')]
     private ?string $password = null;
 
+    #[ORM\OneToMany(targetEntity: Commande::class, mappedBy: 'compte')]
+    private Collection $commandes;
+
+   
+
    
 
     public function __construct()
     {
         $this->commandes = new ArrayCollection();
+        $this->comandes2 = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -202,6 +208,37 @@ class Compte
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Commande>
+     */
+    public function getCommandes(): Collection
+    {
+        return $this->commandes;
+    }
+
+    public function addCommande(Commande $commande): static
+    {
+        if (!$this->commandes->contains($commande)) {
+            $this->commandes->add($commande);
+            $commande->setCompte($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommande(Commande $commande): static
+    {
+        if ($this->commandes->removeElement($commande)) {
+            // set the owning side to null (unless already changed)
+            if ($commande->getCompte() === $this) {
+                $commande->setCompte(null);
+            }
+        }
+
+        return $this;
+    }
+
 
 
 }
