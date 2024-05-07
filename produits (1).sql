@@ -1,10 +1,12 @@
 
 
-INSERT INTO `categories`(`id`, `nom`) VALUES ('1','Bâtons')
-INSERT INTO `categories`(`id`, `nom`) VALUES ('2','Balles')
-INSERT INTO `categories`(`id`, `nom`) VALUES ('3','Vêtements')
-INSERT INTO `categories`(`id`, `nom`) VALUES ('4','Chariots et Sacs')
-INSERT INTO `categories`(`id`, `nom`) VALUES ('5','Accessoires')
+INSERT INTO `categories`(`id`, `nom`) VALUES
+ ('1','Bâtons'),
+('2','Balles'),
+('3','Vêtements'),
+('4','Chariots et Sacs'),
+('5','Accessoires')
+
 
 
 

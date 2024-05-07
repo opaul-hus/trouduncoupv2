@@ -17,8 +17,10 @@ class Categories
 
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
-
-    #[ORM\OneToMany(targetEntity: Produits::class, mappedBy: 'categorie')]
+    /**
+     * @var Collection<int, Produits>
+     */
+    #[ORM\OneToMany(targetEntity: Produits::class, mappedBy: 'categories')]
     private Collection $produits;
 
     public function __construct()

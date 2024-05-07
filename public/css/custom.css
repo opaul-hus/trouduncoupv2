@@ -115,6 +115,20 @@
                 
         border-top: 3px  solid green;
     }
+    #warningCriteria{
+        
+        
+        color:  black;
+        background-color: yellow;
+        text-align: center;
+        margin-bottom: 30px;
+        padding: 20px 20px;
+        border-radius: 5px;
+        -webkit-box-shadow: 0 2px 48px 0 rgba(0, 0, 0, 0.08);
+        box-shadow: 0 2px 48px 0 rgba(0, 0, 0, 0.08);
+                
+        border-top: 3px  solid black;
+    }
     #messageCart{
         
         

@@ -8,6 +8,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+
+
 #[ORM\Entity(repositoryClass: CompteRepository::class)]
 class Compte
 {
@@ -58,9 +60,13 @@ class Compte
     #[ORM\Column(length: 15)]
     #[Assert\Regex(pattern:'/^.{2,15}$/i', match:true, message:'La taille ou le contenu non conforme')]
     private ?string $password = null;
-
+    /**
+     * @var Collection<int, Commande>
+     */
     #[ORM\OneToMany(targetEntity: Commande::class, mappedBy: 'compte')]
     private Collection $commandes;
+
+    
 
    
 
@@ -209,6 +215,9 @@ class Compte
         return $this;
     }
 
+
+
+
     /**
      * @return Collection<int, Commande>
      */
@@ -238,6 +247,8 @@ class Compte
 
         return $this;
     }
+
+    
 
 
 

@@ -31,11 +31,14 @@ class Produits
     private ?int $quanMin = null;
 
     #[ORM\ManyToOne(inversedBy: 'produits')]
-    
     private ?Categories $categorie = null;
 
+
+    /**
+     * @var Collection<int, CommandeDetail>
+     */
     #[ORM\OneToMany(targetEntity: CommandeDetail::class, mappedBy: 'produits')]
-    private Collection $CommandeDetail;
+    private Collection $commandeDetails;
 
     public function __construct()
     {
@@ -118,19 +121,18 @@ class Produits
 
         return $this;
     }
-
     /**
      * @return Collection<int, CommandeDetail>
      */
-    public function getCommandeDetail(): Collection
+    public function getCommandeDetails(): Collection
     {
-        return $this->CommandeDetail;
+        return $this->commandeDetails;
     }
 
     public function addCommandeDetail(CommandeDetail $commandeDetail): static
     {
-        if (!$this->CommandeDetail->contains($commandeDetail)) {
-            $this->CommandeDetail->add($commandeDetail);
+        if (!$this->commandeDetails->contains($commandeDetail)) {
+            $this->commandeDetails->add($commandeDetail);
             $commandeDetail->setProduits($this);
         }
 
@@ -139,7 +141,7 @@ class Produits
 
     public function removeCommandeDetail(CommandeDetail $commandeDetail): static
     {
-        if ($this->CommandeDetail->removeElement($commandeDetail)) {
+        if ($this->commandeDetails->removeElement($commandeDetail)) {
             // set the owning side to null (unless already changed)
             if ($commandeDetail->getProduits() === $this) {
                 $commandeDetail->setProduits(null);
@@ -148,4 +150,5 @@ class Produits
 
         return $this;
     }
+
 }

@@ -15,6 +15,8 @@ use Doctrine\Persistence\ManagerRegistry;
 use App\Classe\NewPassword;
 use App\Classe\Util;
 
+use App\Entity\Commande;
+
 
 class CompteController extends AbstractController
 {
@@ -273,7 +275,25 @@ class CompteController extends AbstractController
 
     }
 
+    #[Route('/commande_historique', name: 'commande_historique')]
+    public function commande_historique(ManagerRegistry $doctrine,Request $request): Response
+    {
+        if(Util::Secure($request))
+        {
+            $compte = $request->getSession()->get('compte_connecte');
+            $commandes = $doctrine->getManager()->getRepository(Commande::class)->findBy(['client' => $compte], ['date' => 'DESC']);
+            
 
+            return $this->render('commande_historique.html.twig', [
+                'commandes' => $commandes,
+            ]);}
+        else
+        {
+            $this->addFlash('notice', 'Tetative de fraude détectée, veuillez vous connecter pour continuer.');
+            return $this->redirectToRoute('acceuilTroupDunCoup');
+        }
+
+    }
 }
                     
          

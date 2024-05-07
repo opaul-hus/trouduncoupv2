@@ -17,15 +17,13 @@ class CommandeDetail
     private ?int $quantite = null;
 
     #[ORM\Column]
-    private ?int $qunatiteRupture = null;
+    private ?int $quantiteRupture = null;
+
+    #[ORM\ManyToOne(inversedBy: 'commandeDetails')]
+    private ?Produits $produits = null;
 
     #[ORM\ManyToOne(inversedBy: 'commandeDetail')]
-    
     private ?Commande $commande = null;
-
-    #[ORM\ManyToOne(inversedBy: 'CommandeDetail')]
-    
-    private ?Produits $produits = null;
 
     public function getId(): ?int
     {
@@ -44,14 +42,14 @@ class CommandeDetail
         return $this;
     }
 
-    public function getQunatiteRupture(): ?int
+    public function getQuantiteRupture(): ?int
     {
-        return $this->qunatiteRupture;
+        return $this->quantiteRupture;
     }
 
-    public function setQunatiteRupture(int $qunatiteRupture): static
+    public function setQuantiteRupture(int $quantiteRupture): static
     {
-        $this->qunatiteRupture = $qunatiteRupture;
+        $this->quantiteRupture = $quantiteRupture;
 
         return $this;
     }
@@ -79,4 +77,5 @@ class CommandeDetail
 
         return $this;
     }
+
 }
