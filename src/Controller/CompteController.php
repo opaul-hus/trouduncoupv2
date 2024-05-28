@@ -77,7 +77,10 @@ class CompteController extends AbstractController
         {
         $request->getSession()->set('compte_connecte', $request->getSession()->get('client_possible'));
         $em = $doctrine->getManager();
-        $em->persist($request->getSession()->get('client_possible'));
+        $compte = $request->getSession()->get('compte_connecte');
+        $pswH=password_hash($compte->getPassword(),PASSWORD_DEFAULT);
+        $compte->setPassword($pswH);
+        $em->persist($compte);
         $request->getSession()->remove('client_possible');
         $em->flush();
         $this->addFlash('notice', 'Compte ajouté avec succès , Bienvenue '.$request->getSession()->get('compte_connecte')->getUsername());
@@ -175,7 +178,7 @@ class CompteController extends AbstractController
                        {
     
     
-                        if ($compte->getPassword() != $possibleNewPassword->getOldPassword()){
+                        if (!password_verify($possibleNewPassword->getOldPassword(),$compte->getPassword())){
                             $this->addFlash('erreur', "Ancien mot de passe incorrect");
                             return $this->render('dossierCompte.html.twig',[
                                 'form' => $form->createView(),
@@ -185,7 +188,7 @@ class CompteController extends AbstractController
                         
                               $em = $doctrine->getManager();
                               $compteAMod = $em->getRepository(Compte::class)->find($compte->getId());
-                              $compteAMod->setPassword($possibleNewPassword->getNewPassword());
+                              $compteAMod->setPassword(password_hash($possibleNewPassword->getNewPassword(),PASSWORD_DEFAULT));
                               $em->flush();
                               $this->addFlash('notice', 'Mot de passe modifié avec succès');
                               
@@ -221,8 +224,15 @@ class CompteController extends AbstractController
     #[Route('/deconnexion', name: 'deconnexion')]
     public function deconnexion(ManagerRegistry $doctrine,Request $request): Response
     {
+        $admin = $request->query->get('admin');
         $this->addFlash('notice', 'Compte deconnecté avec succès , Au revoir '.$request->getSession()->get('compte_connecte')->getUsername());
         $request->getSession()->remove('compte_connecte');
+        if($admin)
+        {
+            return $this->redirectToRoute('connexionAdmin');
+        }
+       
+        
         
         return $this->redirectToRoute('acceuilTroupDunCoup');
     }
@@ -245,14 +255,15 @@ class CompteController extends AbstractController
                    //Est-ce que les donnée de l'utilsateurs sont valides
                    if ($form->isValid())
                    {
-                       $compte = $form->getData();
-                       $compte = $doctrine->getManager()->getRepository(Compte::class)->findOneBy(['username' => $compte->getUsername(), 'password' => $compte->getPassword()]);
-                       if ($compte)
-                       {
-                           $request->getSession()->set('compte_connecte', $compte);
-                           $this->addFlash('notice', 'Bienvenue '.$compte->getUsername());
-                           if ($request->getSession()->get('pannier')!=null&&$request->getSession()->get('pannier')->getNbProduits() > 0){
-                       
+                    $compte = $form->getData();
+                    $mp=$compte->getPassword();
+                    $compte = $doctrine->getManager()->getRepository(Compte::class)->findOneBy(['username' => $compte->getUsername()]);
+                    
+                    if ($compte&&password_verify($mp,$compte->getPassword())&&$compte->getUsername()=="admin")
+                    {
+                        $request->getSession()->set('compte_connecte', $compte);
+                        $this->addFlash('notice', 'Bienvenue '.$compte->getUsername());
+               
                             return $this->redirectToRoute('app_commande');
                         }
                            return $this->redirectToRoute('acceuilTroupDunCoup');
@@ -262,6 +273,7 @@ class CompteController extends AbstractController
                            $this->addFlash('erreur', 'Nom d\'utilisateur ou mot de passe incorrect');
                        }
                    }
+
                    else
                    {
                         foreach ($form->getErrors(true) as $error)
@@ -269,15 +281,13 @@ class CompteController extends AbstractController
                             $this->addFlash('erreur', $error->getMessage());
                         }
                     }
+                    
 
+                    return $this->render('connexion.html.twig', [
+                        'form' => $form->createView(),
+                    ]);
         }
     
-
-        return $this->render('connexion.html.twig', [
-            'form' => $form->createView(),
-        ]);
-
-    }
 
     #[Route('/', name: 'connexionAdmin')]
     public function connexionAdmin(ManagerRegistry $doctrine,Request $request): Response
@@ -301,10 +311,10 @@ class CompteController extends AbstractController
                        $mp=$compte->getPassword();
                        $compte = $doctrine->getManager()->getRepository(Compte::class)->findOneBy(['username' => $compte->getUsername()]);
                        
-                       if ($compte&&password_verify($mp,$compte->getPassword()))
+                       if ($compte&&password_verify($mp,$compte->getPassword())&&$compte->getUsername()=="admin")
                        {
                            $request->getSession()->set('compte_connecte', $compte);
-                           $this->addFlash('notice', 'Bienvenue '.$compte->getUsername());
+                           $this->addFlash('notice', 'Bienvenue '.$compte->getUsername() .' vous êtes connecté en tant qu\'administrateur');
                   
                            return $this->redirectToRoute('controle_admin');
                        }

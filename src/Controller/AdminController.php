@@ -22,6 +22,7 @@ use Doctrine\Persistence\ManagerRegistry;
 
 use App\Entity\Categories;
 use App\Entity\Produits;
+use App\Entity\Commande;
 
 
 
@@ -374,10 +375,13 @@ class AdminController extends AbstractController
     #[Route('/admin/rapVentes', name: 'rap_ventes')]
     public function rapVentes(ManagerRegistry $doctrine,Request $request): Response
     {
+
         if(Util::Secure($request)&&$request->getSession()->get('compte_connecte')->getUsername()=="admin")
         {
-            return $this->render('admin/index.html.twig', [
+            $commandes=$doctrine->getRepository(Commande::class)->findAll();
+            return $this->render('admin/rapVentes.html.twig', [
                 'controller_name' => 'AdminController',
+                'commandes' => $commandes
             ]);
         }
         else
@@ -392,10 +396,13 @@ class AdminController extends AbstractController
     #[Route('/admin/list_prod', name: 'list_prod')]
     public function listeProd(ManagerRegistry $doctrine,Request $request): Response
     {
+
         if(Util::Secure($request)&&$request->getSession()->get('compte_connecte')->getUsername()=="admin")
         {
-            return $this->render('admin/index.html.twig', [
+            $produits=$doctrine->getRepository(Produits::class)->findAll();
+            return $this->render('admin/listProds.html.twig', [
                 'controller_name' => 'AdminController',
+                'produits' => $produits
             ]);
         }
         else
@@ -403,6 +410,7 @@ class AdminController extends AbstractController
             $this->addFlash('notice', 'Tetative de fraude détectée, veuillez vous connecter pour continuer.');
             return $this->redirectToRoute('connexionAdmin');
         }
+
 
     }
 
@@ -411,8 +419,18 @@ class AdminController extends AbstractController
     {
         if(Util::Secure($request)&&$request->getSession()->get('compte_connecte')->getUsername()=="admin")
         {
-            return $this->render('admin/index.html.twig', [
+            $produits=$doctrine->getRepository(Produits::class)->findAll();
+            $produitsOos = [];
+            foreach ($produits as $produit)
+            {
+                if ($produit->getQuanStock() <= $produit->getQuanMin())
+                {
+                    $produitsOos[] = $produit;
+                }
+            }
+            return $this->render('admin/listProds.html.twig', [
                 'controller_name' => 'AdminController',
+                'produits' => $produitsOos
             ]);
         }
         else
@@ -420,7 +438,6 @@ class AdminController extends AbstractController
             $this->addFlash('notice', 'Tetative de fraude détectée, veuillez vous connecter pour continuer.');
             return $this->redirectToRoute('connexionAdmin');
         }
-
     }
     
 

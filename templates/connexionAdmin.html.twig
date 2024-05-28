@@ -13,14 +13,21 @@
 {% block title %}Connexion{% endblock %}
 {% block body %}
 <div class="container">
-
+<p><a href="{{path('acceuilTroupDunCoup')}}" class="btn btn-warning offset-10 "> Menu Principal </a></p>
            <div class="row col-6 mx-auto">    
                 <h3 id="formTitle">Connexion Admin</h3>
                   {% for message in app.flashes('erreur') %} 
     <div class="flash-notice">
       <h2 id="messageCart" class="mt-3">{{message}}</h2>
     </div>
+
     {% endfor %}
+          {% for message in app.flashes('notice') %} 
+    <div class="flash-notice">
+      <div id="messageCriteria">{{message}}</div>
+    </div>
+    {% endfor %}
+    
                 {{ form_start(form) }}
             <section class="mt-2">
             {{form_label(form.username, 'Nom d\'utilisateur :')}}

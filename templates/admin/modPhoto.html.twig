@@ -36,9 +36,9 @@
     
 
 
-   <article class="col-6">
+   <article class="my-2 p-2">
       {{form_start(form)}}
-      {{form_label(form.imageProduit, "Photo produit (max 50 Ko):")  }}
+      {{form_label(form.imageProduit, "Photo produit (max 100 Ko):")  }}
       {{form_errors(form.imageProduit) }}
          <input type="Hidden" value="100000" name='MAX_FILE_SIZE'>
       {{form_widget(form.imageProduit)  }}
