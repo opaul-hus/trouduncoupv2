@@ -20,7 +20,7 @@ class BaseController extends AbstractController
     //--------------------------------------
     //route de base pour le site affiche tous les produits
     //--------------------------------------
-    #[Route('/', name: 'acceuilTroupDunCoup')]
+    #[Route('/racine', name: 'acceuilTroupDunCoup')]
     public function index(ManagerRegistry $doctrine, Request $request): Response
     {
         $session = $request->getSession();

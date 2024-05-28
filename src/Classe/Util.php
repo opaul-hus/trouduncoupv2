@@ -14,6 +14,7 @@ class Util
     public static function Secure(Request $req ,$typeCompte='CONNECTE')
     
     {
+
         if ($typeCompte == 'CONNECTE')
         {
             $entiteConnectee = $req->getSession()->get('compte_connecte');

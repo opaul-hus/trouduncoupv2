@@ -17,6 +17,8 @@ use App\Classe\Util;
 
 use App\Entity\Commande;
 
+use App\Classe\Panier;
+
 
 class CompteController extends AbstractController
 {
@@ -210,6 +212,8 @@ class CompteController extends AbstractController
         }
 
     }
+
+    
     ///--------------------------------------
     //route pour deconnecter un compte
     // supprime le compte de la session et redirige vers la page d'acceuil
@@ -270,6 +274,57 @@ class CompteController extends AbstractController
     
 
         return $this->render('connexion.html.twig', [
+            'form' => $form->createView(),
+        ]);
+
+    }
+
+    #[Route('/', name: 'connexionAdmin')]
+    public function connexionAdmin(ManagerRegistry $doctrine,Request $request): Response
+    {
+        $session = $request->getSession();
+        if (!$session->has('panier')) {
+            $session->set('panier', new Panier());
+        }
+        $compte = new Compte();
+        $form = $this->createForm(LogInType::class, $compte);
+        $form->handleRequest($request);
+        
+        
+        if ($form->isSubmitted())
+        {
+
+                   //Est-ce que les donnée de l'utilsateurs sont valides
+                   if ($form->isValid())
+                   {
+                       $compte = $form->getData();
+                       $mp=$compte->getPassword();
+                       $compte = $doctrine->getManager()->getRepository(Compte::class)->findOneBy(['username' => $compte->getUsername()]);
+                       
+                       if ($compte&&password_verify($mp,$compte->getPassword()))
+                       {
+                           $request->getSession()->set('compte_connecte', $compte);
+                           $this->addFlash('notice', 'Bienvenue '.$compte->getUsername());
+                  
+                           return $this->redirectToRoute('controle_admin');
+                       }
+                       else
+                       {
+                           $this->addFlash('erreur', 'Nom d\'utilisateur ou mot de passe incorrect');
+                       }
+                   }
+                   else
+                   {
+                        foreach ($form->getErrors(true) as $error)
+                        {
+                            $this->addFlash('erreur', $error->getMessage());
+                        }
+                    }
+
+        }
+    
+
+        return $this->render('connexionAdmin.html.twig', [
             'form' => $form->createView(),
         ]);
 
